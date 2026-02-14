@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For Sush ❤️</title>
+
+<style>
+body {
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding-top: 40px;
+  overflow-x: hidden;
+.flash-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  animation: flashGlow 1s infinite alternate;
+}
+
+@keyframes flashGlow {
+  0% {
+    color: white;
+    text-shadow: 0 0 5px #fff, 0 0 10px #ff4b7d;
+  }
+  100% {
+    color: #ffe6f0;
+    text-shadow: 0 0 15px #fff, 0 0 25px #ff1a66, 0 0 35px #ff1a66;
+  }
+}
+.kiss {
+  position: fixed;
+  font-size: 26px;
+  animation: kissFly 4s linear infinite;
+}
+
+@keyframes kissFly {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-600px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+}
+
+h1 { font-size: 36px; }
+
+.main-photo {
+  width: 260px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 20px 0;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin: 20px;
+}
+
+#yes { background: white; color: #ff4b7d; }
+#no  { background: black; color: white; position: absolute; }
+
+#celebration {
+  display: none;
+  margin-top: 30px;
+}
+
+.dance {
+  width: 180px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: top 1s ease, left 1s ease, transform 0.5s ease;
+  z-index: 1000;
+}
+
+.dance.show {
+  transform: translate(-50%, -50%) scale(1.2);
+  animation: popBounce 0.6s ease forwards;
+}
+
+@keyframes popBounce {
+  0%   { transform: translate(-50%, -50%) scale(0); }
+  60%  { transform: translate(-50%, -50%) scale(1.3); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 22px;
+  animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-900px); opacity: 0; }
+}
+</style>
+
+<!-- Confetti Library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</head>
+
+<body>
+
+<h1>I Love You Sush ❤️</h1>
+
+<img src="sush.jpg" class="main-photo">
+
+<h2>Will You Be My Valentine?</h2>
+
+<button id="yes" onclick="celebrate()">YES 💖</button>
+<button id="no" onmouseover="moveNo()">NO 😜</button>
+
+<div id="celebration">
+  <h2>It's the Right Choice Baby ❤️🔥</h2>
+  <p class="flash-text">You have subscribed to Lifetime Love Membership 💎</p>
+
+ <img src="dance.gif" class="dance" id="danceGif">
+</div>
+
+<!-- Background Music -->
+<audio id="tumhi" loop>
+  <source src="Tum-Hi-Aana.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="ajioji">
+  <source src="a-ji-o-ji-lo-ji-suno-ji.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+// Start Tum Hi Aana after first click (browser rule)
+document.body.addEventListener("click", function initMusic() {
+  document.getElementById("tumhi").play();
+  document.body.removeEventListener("click", initMusic);
+});
+
+function moveNo() {
+  var button = document.getElementById("no");
+  button.style.top = Math.random() * 400 + "px";
+  button.style.left = Math.random() * 400 + "px";
+}
+
+function createHearts() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+  }, 300);
+}
+
+function moveDanceGif() {
+  const gif = document.querySelector(".dance");
+
+  setInterval(() => {
+    const maxX = window.innerWidth - 200;
+    const maxY = window.innerHeight - 200;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    gif.style.left = randomX + "px";
+    gif.style.top = randomY + "px";
+  }, 1500);
+}
+
+function celebrate() {
+
+  document.getElementById("celebration").style.display = "block";
+
+  // Stop Tum Hi Aana
+  var bg = document.getElementById("tumhi");
+  bg.pause();
+  bg.currentTime = 0;
+
+  // Play A Ji O Ji
+  var party = document.getElementById("ajioji");
+  party.play();
+
+  createHearts();
+  createKisses();
+
+  // POP animation
+  const gif = document.getElementById("danceGif");
+  gif.classList.add("show");
+
+  // Start roaming after slight delay
+  setTimeout(() => {
+    moveDanceGif();
+  }, 700);
+
+  // Fireworks
+  var duration = 3000;
+  var end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 70,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 70,
+      origin: { x: 1 }
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
+function createKisses() {
+  setInterval(() => {
+    const kiss = document.createElement("div");
+    kiss.classList.add("kiss");
+    kiss.innerHTML = "💋";
+    kiss.style.left = Math.random() * 100 + "vw";
+    kiss.style.bottom = "0px";
+    kiss.style.animationDuration = (3 + Math.random() * 2) + "s";
+    document.body.appendChild(kiss);
+
+    setTimeout(() => kiss.remove(), 4000);
+  }, 500);
+}
+</script>
+
+</body>
+</html>
